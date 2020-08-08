@@ -62,6 +62,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 MotionEvent.ACTION_DOWN -> fingerDown(slot, x, y)
                 MotionEvent.ACTION_MOVE -> fingerMove(slot, x, y)
                 MotionEvent.ACTION_UP -> fingerUp(slot)
+                MotionEvent.ACTION_CANCEL -> fingerUp(slot)
             }
         }
 
