@@ -156,7 +156,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             return
         }
 
-        if (lastPoint[slot].x != -1f && lastPoint[slot].y != -1f) {
+        if (mode == PaintMode.PAINT && lastPoint[slot].x != -1f && lastPoint[slot].y != -1f) {
             bufCanvas.drawLine(x, y, lastPoint[slot].x, lastPoint[slot].y, brushPaint)
         }
 
