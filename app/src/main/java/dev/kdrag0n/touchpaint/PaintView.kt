@@ -124,12 +124,14 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             MotionEvent.ACTION_DOWN -> fingerDown(0)
             MotionEvent.ACTION_POINTER_DOWN -> fingerDown(event.actionIndex)
             MotionEvent.ACTION_MOVE -> {
-                for (i in 0 until event.pointerCount) {
-                    val slot = event.getPointerId(i)
-                    val x = event.getX(i)
-                    val y = event.getY(i)
+                for (p in 0 until event.pointerCount) {
+                    val slot = event.getPointerId(p)
 
-                    fingerMove(slot, x, y)
+                    for (h in 0 until event.historySize) {
+                        fingerMove(slot, event.getHistoricalX(p, h), event.getHistoricalY(p, h))
+                    }
+
+                    fingerMove(slot, event.getX(p), event.getY(p))
                 }
             }
             MotionEvent.ACTION_UP -> allFingersUp()
