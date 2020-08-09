@@ -59,7 +59,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
         bufCanvas = Canvas(bitmap)
         clearCanvas()
     }
