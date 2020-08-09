@@ -23,6 +23,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         strokeWidth = 3f
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
+        isAntiAlias = true
     }
 
     private var fingers = 0
