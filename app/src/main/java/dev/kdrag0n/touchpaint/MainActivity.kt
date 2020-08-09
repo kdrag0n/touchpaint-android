@@ -20,68 +20,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.paint_mode -> {
-                item.isChecked = !item.isChecked
-                paintView.mode = PaintMode.PAINT
-                true
+        item.isChecked = !item.isChecked
+
+        paintView.apply {
+            when (item.itemId) {
+                // Modes
+                R.id.paint_mode -> mode = PaintMode.PAINT
+                R.id.fill_mode -> mode = PaintMode.FILL
+                R.id.follow_mode -> mode = PaintMode.FOLLOW
+                R.id.blank_mode -> mode = PaintMode.BLANK
+
+                // Brush sizes
+                R.id.brush_size_1px -> setBrushSize(1f)
+                R.id.brush_size_3px -> setBrushSize(3f)
+                R.id.brush_size_5px -> setBrushSize(5f)
+                R.id.brush_size_10px -> setBrushSize(10f)
+                R.id.brush_size_15px -> setBrushSize(15f)
+                R.id.brush_size_50px -> setBrushSize(50f)
+                R.id.brush_size_150px -> setBrushSize(150f)
+
+                // Paint clear delays
+                R.id.clear_delay_250ms -> paintClearDelay = 250
+                R.id.clear_delay_500ms -> paintClearDelay = 500
+                R.id.clear_delay_1000ms -> paintClearDelay = 1000
+                R.id.clear_delay_2000ms -> paintClearDelay = 2000
+                R.id.clear_delay_5000ms -> paintClearDelay = 5000
+                R.id.clear_delay_never -> paintClearDelay = -1
+                R.id.clear_delay_next_stroke -> paintClearDelay = 0
+
+                    // Other toggles
+                R.id.event_rate_toggle -> measureEventRate = item.isChecked
+
+                // Submenus and other unhandled items
+                else -> return super.onOptionsItemSelected(item)
             }
-            R.id.fill_mode -> {
-                item.isChecked = !item.isChecked
-                paintView.mode = PaintMode.FILL
-                true
-            }
-            R.id.follow_mode -> {
-                item.isChecked = !item.isChecked
-                paintView.mode = PaintMode.FOLLOW
-                true
-            }
-            R.id.blank_mode -> {
-                item.isChecked = !item.isChecked
-                paintView.mode = PaintMode.BLANK
-                true
-            }
-            R.id.event_rate_toggle -> {
-                item.isChecked = !item.isChecked
-                paintView.measureEventRate = item.isChecked
-                true
-            }
-            R.id.brush_size_1px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(1f)
-                true
-            }
-            R.id.brush_size_3px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(3f)
-                true
-            }
-            R.id.brush_size_5px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(5f)
-                true
-            }
-            R.id.brush_size_10px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(10f)
-                true
-            }
-            R.id.brush_size_15px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(15f)
-                true
-            }
-            R.id.brush_size_50px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(50f)
-                true
-            }
-            R.id.brush_size_150px -> {
-                item.isChecked = !item.isChecked
-                paintView.setBrushSize(150f)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
+
+        return true
     }
 }

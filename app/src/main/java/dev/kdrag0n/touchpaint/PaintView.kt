@@ -42,6 +42,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     var mode = PaintMode.PAINT
         set(value) {
             field = value
+
+            removeCallbacks(clearRunnable)
             clearCanvas()
             invalidate()
         }
@@ -60,6 +62,9 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 stopSampleRate()
             }
         }
+
+    // 0 = on next stroke, -1 = never, * = delay in ms
+    var paintClearDelay = 0L
 
     private var eventsReceived = 0
     private var lastToast: Toast? = null
@@ -139,7 +144,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         fingers++
         if (fingers == 1) {
             when (mode) {
-                PaintMode.PAINT -> clearCanvas()
+                PaintMode.PAINT -> {
+                    if (paintClearDelay > 0)
+                        removeCallbacks(clearRunnable)
+                    else if (paintClearDelay == 0L)
+                        clearCanvas()
+                }
                 PaintMode.FILL -> {
                     removeCallbacks(clearRunnable)
                     fillDown = true
@@ -176,6 +186,9 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
         if (fingers == 0) {
             when (mode) {
+                PaintMode.PAINT -> if (paintClearDelay > 0) {
+                    postDelayed(clearRunnable, paintClearDelay)
+                }
                 PaintMode.FILL -> postDelayed(clearRunnable, 250)
                 else -> {}
             }

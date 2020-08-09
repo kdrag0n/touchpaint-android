@@ -38,6 +38,28 @@
         </menu>
     </item>
 
+    <item android:id="@+id/clear_delay" android:title="@string/clear_delay">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/clear_delay_next_stroke"
+                    android:title="@string/on_next_stroke"
+                    android:checked="true" />
+                <item android:id="@+id/clear_delay_250ms"
+                    android:title="@string/clear_delay_250ms" />
+                <item android:id="@+id/clear_delay_500ms"
+                    android:title="@string/clear_delay_500ms" />
+                <item android:id="@+id/clear_delay_1000ms"
+                    android:title="@string/clear_delay_1000ms" />
+                <item android:id="@+id/clear_delay_2000ms"
+                    android:title="@string/clear_delay_2000ms" />
+                <item android:id="@+id/clear_delay_5000ms"
+                    android:title="@string/clear_delay_5000ms" />
+                <item android:id="@+id/clear_delay_never"
+                    android:title="@string/never" />
+            </group>
+        </menu>
+    </item>
+
     <item android:id="@+id/event_rate_toggle"
         android:title="@string/show_event_rate"
         android:checkable="true" />

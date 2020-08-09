@@ -14,4 +14,12 @@
     <string name="fill">Fill</string>
     <string name="follow">Follow</string>
     <string name="blank">Blank redraw</string>
+    <string name="clear_delay_250ms">250 ms</string>
+    <string name="clear_delay_500ms">500 ms</string>
+    <string name="clear_delay_1000ms">1 second</string>
+    <string name="clear_delay_2000ms">2 seconds</string>
+    <string name="clear_delay_5000ms">5 seconds</string>
+    <string name="never">Never</string>
+    <string name="on_next_stroke">On next stroke</string>
+    <string name="clear_delay">Clear delay</string>
 </resources>
