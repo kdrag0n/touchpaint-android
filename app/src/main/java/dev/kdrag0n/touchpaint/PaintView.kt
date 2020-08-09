@@ -21,6 +21,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         color = Color.WHITE
         style = Paint.Style.STROKE
         strokeWidth = 3f
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
     }
 
     private var fingers = 0
