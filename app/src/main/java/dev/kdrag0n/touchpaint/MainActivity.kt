@@ -34,11 +34,51 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.paint_menu, menu)
+
+        paintView.apply {
+            menu!!.apply {
+                findItem(when (mode) {
+                    PaintMode.PAINT -> R.id.paint_mode
+                    PaintMode.FILL -> R.id.fill_mode
+                    PaintMode.FOLLOW -> R.id.follow_mode
+                    PaintMode.BLANK -> R.id.blank_mode
+                }).isChecked = true
+
+                findItem(when (getBrushSizeDp()) {
+                    -1f -> R.id.brush_size_physical_1px
+                    1f -> R.id.brush_size_1px
+                    2f -> R.id.brush_size_2px
+                    3f -> R.id.brush_size_3px
+                    5f -> R.id.brush_size_5px
+                    10f -> R.id.brush_size_10px
+                    15f -> R.id.brush_size_15px
+                    50f -> R.id.brush_size_50px
+                    150f -> R.id.brush_size_150px
+                    else -> R.id.brush_size_2px
+                }).isChecked = true
+
+                findItem(when (paintClearDelay) {
+                    100L -> R.id.clear_delay_100ms
+                    250L -> R.id.clear_delay_250ms
+                    500L -> R.id.clear_delay_500ms
+                    1000L -> R.id.clear_delay_1000ms
+                    2000L -> R.id.clear_delay_2000ms
+                    5000L -> R.id.clear_delay_5000ms
+                    -1L -> R.id.clear_delay_never
+                    0L -> R.id.clear_delay_next_stroke
+                    else -> R.id.clear_delay_next_stroke
+                }).isChecked = true
+
+                findItem(R.id.event_rate_toggle).isChecked = measureEventRate
+            }
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        item.isChecked = !item.isChecked
+        if (item.isCheckable) {
+            item.isChecked = !item.isChecked
+        }
 
         paintView.apply {
             when (item.itemId) {
