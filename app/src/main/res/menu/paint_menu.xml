@@ -6,6 +6,8 @@
                 <item android:id="@+id/paint_mode"
                     android:title="@string/paint"
                     android:checked="true" />
+                <item android:id="@+id/fill_mode"
+                    android:title="@string/fill" />
             </group>
         </menu>
     </item>

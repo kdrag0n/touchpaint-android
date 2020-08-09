@@ -21,6 +21,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.paint_mode -> {
+                item.isChecked = !item.isChecked
+                paintView.mode = PaintMode.PAINT
+                true
+            }
+            R.id.fill_mode -> {
+                item.isChecked = !item.isChecked
+                paintView.mode = PaintMode.FILL
+                true
+            }
             R.id.sample_rate_toggle -> {
                 item.isChecked = !item.isChecked
                 paintView.measureSampleRate = item.isChecked

@@ -17,6 +17,11 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         style = Paint.Style.FILL
     }
 
+    private val fgPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.FILL
+    }
+
     private val brushPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
@@ -26,11 +31,14 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         isAntiAlias = true
     }
 
+    var mode = PaintMode.PAINT
+
     private var fingers = 0
     private lateinit var bitmap: Bitmap
     private lateinit var bufCanvas: Canvas
     private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
+    private var fillDown = false
 
     var measureSampleRate = false
         set(value) {
@@ -53,8 +61,16 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         kickSampleRate()
     }
 
+    private val clearRunnable = Runnable {
+        clearCanvas()
+        invalidate()
+    }
+
     override fun onDraw(canvas: Canvas?) {
-        canvas!!.drawBitmap(bitmap, 0f, 0f, null)
+        when (mode) {
+            PaintMode.PAINT -> canvas!!.drawBitmap(bitmap, 0f, 0f, null)
+            PaintMode.FILL -> canvas!!.drawPaint(if (fillDown) fgPaint else bgPaint)
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -68,6 +84,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private fun clearCanvas() {
+        fillDown = false
         bufCanvas.drawPaint(bgPaint)
         lastPoint.forEach {
             it.x = -1f
@@ -95,7 +112,15 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         fingerDown[slot] = true
         fingers++
         if (fingers == 1) {
-            clearCanvas()
+            when (mode) {
+                PaintMode.PAINT -> clearCanvas()
+                PaintMode.FILL -> {
+                    removeCallbacks(clearRunnable)
+                    fillDown = true
+                    invalidate()
+                }
+            }
+
             kickSampleRate()
         }
     }
@@ -125,6 +150,11 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         fingers--
 
         if (fingers == 0) {
+            when (mode) {
+                PaintMode.FILL -> postDelayed(clearRunnable, 250)
+                else -> {}
+            }
+
             stopSampleRate()
         }
     }
@@ -151,9 +181,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                     fingerMove(slot, event.getX(p), event.getY(p))
                 }
             }
-            MotionEvent.ACTION_UP -> allFingersUp()
             MotionEvent.ACTION_POINTER_UP -> fingerUp(event.actionIndex)
-            MotionEvent.ACTION_CANCEL -> allFingersUp()
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> allFingersUp()
         }
 
         invalidate()
