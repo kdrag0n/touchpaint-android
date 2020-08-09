@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.blank_mode -> mode = PaintMode.BLANK
 
                 // Brush sizes
+                R.id.brush_size_physical_1px -> setBrushSizePx(1f)
                 R.id.brush_size_1px -> setBrushSize(1f)
                 R.id.brush_size_3px -> setBrushSize(3f)
                 R.id.brush_size_5px -> setBrushSize(5f)

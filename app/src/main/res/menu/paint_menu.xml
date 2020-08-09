@@ -19,6 +19,8 @@
     <item android:id="@+id/brush_size" android:title="@string/brush_size">
         <menu>
             <group android:checkableBehavior="single">
+                <item android:id="@+id/brush_size_physical_1px"
+                    android:title="@string/size_physical_1px" />
                 <item android:id="@+id/brush_size_1px"
                     android:title="@string/size_1px" />
                 <item android:id="@+id/brush_size_3px"

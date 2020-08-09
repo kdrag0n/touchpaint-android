@@ -115,8 +115,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
     }
 
+    fun setBrushSizePx(px: Float) {
+        brushPaint.strokeWidth = px
+    }
+
     fun setBrushSize(dp: Float) {
-        brushPaint.strokeWidth = dpToPx(dp)
+        setBrushSizePx(dpToPx(dp))
     }
 
     private fun clearCanvas() {
