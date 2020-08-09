@@ -6,6 +6,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 
 const val MAX_FINGERS = 10
 
@@ -28,6 +29,20 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val fingerDown = Array(MAX_FINGERS) { false }
     private val pathStarted = Array(MAX_FINGERS) { false }
 
+    private var eventsReceived = 0
+    private var lastToast: Toast? = null
+    private val sampleRateRunnable = Runnable {
+        lastToast?.cancel()
+        lastToast = null
+
+        val toast = Toast.makeText(context, "Touch sample rate: $eventsReceived Hz", Toast.LENGTH_SHORT)
+        toast.show()
+        lastToast = toast
+
+        eventsReceived = 0
+        kickSampleRate()
+    }
+
     override fun onDraw(canvas: Canvas?) {
         canvas?.drawPaint(bgPaint)
         for (path in paths) {
@@ -42,6 +57,14 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
+    private fun kickSampleRate() {
+        postDelayed(sampleRateRunnable, 1000)
+    }
+
+    private fun stopSampleRate() {
+        removeCallbacks(sampleRateRunnable)
+    }
+
     private fun fingerDown(slot: Int) {
         if (fingerDown[slot]) {
             return
@@ -51,6 +74,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         fingers++
         if (fingers == 1) {
             clearCanvas()
+            kickSampleRate()
         }
 
         val path = Path()
@@ -70,6 +94,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
 
         curPaths[slot]!!.lineTo(x, y)
+        eventsReceived++
     }
 
     private fun fingerUp(slot: Int) {
@@ -81,6 +106,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         pathStarted[slot] = false
         fingerDown[slot] = false
         fingers--
+
+        if (fingers == 0) {
+            stopSampleRate()
+        }
     }
 
     private fun allFingersUp() {
