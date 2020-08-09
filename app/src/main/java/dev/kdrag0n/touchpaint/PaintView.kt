@@ -26,7 +26,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val brushPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
-        strokeWidth = dpToPx(3f)
+        strokeWidth = resources.getDimension(R.dimen.default_brush_size)
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
         isAntiAlias = true
@@ -35,7 +35,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val boxPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
-        strokeWidth = dpToPx(115f)
+        strokeWidth = resources.getDimension(R.dimen.follow_box_size)
         strokeCap = Paint.Cap.SQUARE
         isAntiAlias = true
     }
