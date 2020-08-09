@@ -60,6 +60,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
     fun setBrushSize(size: Float) {
         brushPaint.strokeWidth = size
+        invalidate()
     }
 
     private fun clearCanvas() {
