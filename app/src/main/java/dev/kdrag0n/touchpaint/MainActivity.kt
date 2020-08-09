@@ -1,5 +1,7 @@
 package dev.kdrag0n.touchpaint
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -7,11 +9,27 @@ import android.view.MenuItem
 
 class MainActivity : AppCompatActivity() {
     private lateinit var paintView: PaintView
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         paintView = findViewById(R.id.paint_view)
+        prefs = getPreferences(Context.MODE_PRIVATE)
+
+        paintView.apply {
+            prefs.apply {
+                mode = PaintMode.values()[getInt(getString(R.string.preference_mode), 0)]
+                paintClearDelay = getLong(getString(R.string.preference_paint_clear_delay), 0)
+                measureEventRate = getBoolean(getString(R.string.preference_measure_event_rate), false)
+
+                val savedBrushSize = getFloat(getString(R.string.preference_brush_size), 2f)
+                if (savedBrushSize == -1f)
+                    setBrushSizePx(1f)
+                else
+                    setBrushSize(savedBrushSize)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -56,6 +74,14 @@ class MainActivity : AppCompatActivity() {
 
                 // Submenus and other unhandled items
                 else -> return super.onOptionsItemSelected(item)
+            }
+
+            prefs.edit().apply {
+                putInt(getString(R.string.preference_mode), mode.ordinal)
+                putFloat(getString(R.string.preference_brush_size), getBrushSizeDp())
+                putLong(getString(R.string.preference_paint_clear_delay), paintClearDelay)
+                putBoolean(getString(R.string.preference_measure_event_rate), measureEventRate)
+                apply()
             }
         }
 

@@ -51,7 +51,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
     private var fingers = 0
     private lateinit var bitmap: Bitmap
-    private lateinit var bufCanvas: Canvas
+    private var bufCanvas: Canvas? = null
     private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
     private var fillDown = false
@@ -115,8 +115,21 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
     }
 
+    private fun pxToDp(px: Float): Float {
+        val scale = context.resources.displayMetrics.density
+        return px / scale
+    }
+
     fun setBrushSizePx(px: Float) {
         brushPaint.strokeWidth = px
+    }
+
+    fun getBrushSizeDp(): Float {
+        return if (brushPaint.strokeWidth == 1f) {
+            -1f
+        } else {
+            pxToDp(brushPaint.strokeWidth)
+        }
     }
 
     fun setBrushSize(dp: Float) {
@@ -125,7 +138,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
     private fun clearCanvas() {
         fillDown = false
-        bufCanvas.drawPaint(bgPaint)
+        bufCanvas?.drawPaint(bgPaint)
         lastPoint.forEach {
             it.x = -1f
             it.y = -1f
@@ -176,7 +189,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
 
         if (mode == PaintMode.PAINT && lastPoint[slot].x != -1f && lastPoint[slot].y != -1f) {
-            bufCanvas.drawLine(x, y, lastPoint[slot].x, lastPoint[slot].y, brushPaint)
+            bufCanvas?.drawLine(x, y, lastPoint[slot].x, lastPoint[slot].y, brushPaint)
         }
 
         lastPoint[slot].x = x
