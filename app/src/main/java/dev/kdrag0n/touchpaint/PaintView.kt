@@ -116,7 +116,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private fun pxToDp(px: Float): Float {
-        val scale = context.resources.displayMetrics.density
+        val scale = resources.displayMetrics.density
         return px / scale
     }
 
