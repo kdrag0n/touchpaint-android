@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                 // Brush sizes
                 R.id.brush_size_physical_1px -> setBrushSizePx(1f)
                 R.id.brush_size_1px -> setBrushSize(1f)
+                R.id.brush_size_2px -> setBrushSize(2f)
                 R.id.brush_size_3px -> setBrushSize(3f)
                 R.id.brush_size_5px -> setBrushSize(5f)
                 R.id.brush_size_10px -> setBrushSize(10f)

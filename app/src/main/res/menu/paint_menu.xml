@@ -23,6 +23,8 @@
                     android:title="@string/size_physical_1px" />
                 <item android:id="@+id/brush_size_1px"
                     android:title="@string/size_1px" />
+                <item android:id="@+id/brush_size_2px"
+                    android:title="@string/size_2px" />
                 <item android:id="@+id/brush_size_3px"
                     android:title="@string/size_3px"
                     android:checked="true" />

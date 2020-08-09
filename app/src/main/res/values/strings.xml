@@ -24,4 +24,5 @@
     <string name="clear_delay">Clear delay</string>
     <string name="clear_delay_100ms">100 ms</string>
     <string name="size_physical_1px">1 physical pixel</string>
+    <string name="size_2px">2 px</string>
 </resources>
