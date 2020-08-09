@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.clear_delay_never -> paintClearDelay = -1
                 R.id.clear_delay_next_stroke -> paintClearDelay = 0
 
-                    // Other toggles
+                // Other toggles
                 R.id.event_rate_toggle -> measureEventRate = item.isChecked
 
                 // Submenus and other unhandled items
