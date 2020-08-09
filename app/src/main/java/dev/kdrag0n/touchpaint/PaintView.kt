@@ -228,8 +228,16 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         when (event!!.actionMasked) {
-            MotionEvent.ACTION_DOWN -> fingerDown(0)
-            MotionEvent.ACTION_POINTER_DOWN -> fingerDown(event.actionIndex)
+            MotionEvent.ACTION_DOWN -> {
+                fingerDown(0)
+                fingerMove(0, event.x, event.y)
+            }
+            MotionEvent.ACTION_POINTER_DOWN -> {
+                val slot = event.actionIndex
+
+                fingerDown(slot)
+                fingerMove(slot, event.getX(slot), event.getY(slot))
+            }
             MotionEvent.ACTION_MOVE -> {
                 for (p in 0 until event.pointerCount) {
                     val slot = event.getPointerId(p)
