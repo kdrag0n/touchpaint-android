@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import java.util.*
 
 const val MAX_FINGERS = 10
 
@@ -26,10 +27,9 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private var fingers = 0
-    private val paths = mutableListOf<Path>()
-    private val curPaths = arrayOfNulls<Path>(MAX_FINGERS)
+    private val points = Vector<Float>()
+    private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
-    private val pathStarted = Array(MAX_FINGERS) { false }
 
     var measureSampleRate = false
         set(value) {
@@ -54,10 +54,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     override fun onDraw(canvas: Canvas?) {
-        canvas?.drawPaint(bgPaint)
-        for (path in paths) {
-            canvas?.drawPath(path, brushPaint)
-        }
+        canvas!!.drawPaint(bgPaint)
+        canvas.drawLines(points.toFloatArray(), brushPaint)
     }
 
     fun setBrushSize(size: Float) {
@@ -65,9 +63,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private fun clearCanvas() {
-        paths.clear()
-        for (i in curPaths.indices) {
-            curPaths[i] = null
+        points.clear()
+        lastPoint.forEach {
+            it.x = -1f
+            it.y = -1f
         }
     }
 
@@ -92,24 +91,22 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             clearCanvas()
             kickSampleRate()
         }
-
-        val path = Path()
-        paths.add(path)
-        curPaths[slot] = path
-        pathStarted[slot] = false
     }
 
     private fun fingerMove(slot: Int, x: Float, y: Float) {
-        if (curPaths[slot] == null) {
-            fingerDown(slot)
+        if (!fingerDown[slot]) {
+            return
         }
 
-        if (!pathStarted[slot]) {
-            curPaths[slot]!!.moveTo(x, y)
-            pathStarted[slot] = true
+        if (lastPoint[slot].x != -1f && lastPoint[slot].y != -1f) {
+            points.add(lastPoint[slot].x)
+            points.add(lastPoint[slot].y)
+            points.add(x)
+            points.add(y)
         }
 
-        curPaths[slot]!!.lineTo(x, y)
+        lastPoint[slot].x = x
+        lastPoint[slot].y = y
         eventsReceived++
     }
 
@@ -118,8 +115,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             return
         }
 
-        curPaths[slot] = null
-        pathStarted[slot] = false
+        lastPoint[slot].x = -1f
+        lastPoint[slot].y = -1f
         fingerDown[slot] = false
         fingers--
 
