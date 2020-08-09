@@ -24,10 +24,10 @@
                 <item android:id="@+id/brush_size_1px"
                     android:title="@string/size_1px" />
                 <item android:id="@+id/brush_size_2px"
-                    android:title="@string/size_2px" />
-                <item android:id="@+id/brush_size_3px"
-                    android:title="@string/size_3px"
+                    android:title="@string/size_2px"
                     android:checked="true" />
+                <item android:id="@+id/brush_size_3px"
+                    android:title="@string/size_3px" />
                 <item android:id="@+id/brush_size_5px"
                     android:title="@string/size_5px" />
                 <item android:id="@+id/brush_size_10px"
