@@ -22,8 +22,11 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         strokeWidth = 3f
     }
 
+    private var fingers = 0
     private val paths = mutableListOf<Path>()
     private val curPaths = arrayOfNulls<Path>(MAX_FINGERS)
+    private val fingerDown = Array(MAX_FINGERS) { false }
+    private val pathStarted = Array(MAX_FINGERS) { false }
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.drawPaint(bgPaint)
@@ -32,38 +35,77 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
-    private fun fingerDown(slot: Int, x: Float, y: Float) {
+    private fun clearCanvas() {
+        paths.clear()
+        for (i in curPaths.indices) {
+            curPaths[i] = null
+        }
+    }
+
+    private fun fingerDown(slot: Int) {
+        if (fingerDown[slot]) {
+            return
+        }
+
+        fingerDown[slot] = true
+        fingers++
+        if (fingers == 1) {
+            clearCanvas()
+        }
+
         val path = Path()
-        path.moveTo(x, y)
         paths.add(path)
         curPaths[slot] = path
+        pathStarted[slot] = false
     }
 
     private fun fingerMove(slot: Int, x: Float, y: Float) {
         if (curPaths[slot] == null) {
-            fingerDown(slot, x, y)
+            fingerDown(slot)
+        }
+
+        if (!pathStarted[slot]) {
+            curPaths[slot]!!.moveTo(x, y)
+            pathStarted[slot] = true
         }
 
         curPaths[slot]!!.lineTo(x, y)
     }
 
     private fun fingerUp(slot: Int) {
+        if (!fingerDown[slot]) {
+            return
+        }
+
         curPaths[slot] = null
+        pathStarted[slot] = false
+        fingerDown[slot] = false
+        fingers--
+    }
+
+    private fun allFingersUp() {
+        for (i in 0 until MAX_FINGERS) {
+            fingerUp(i)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        for (i in 0 until event!!.pointerCount) {
-            val slot = event.getPointerId(i)
-            val x = event.getX(i)
-            val y = event.getY(i)
+        when (event!!.actionMasked) {
+            MotionEvent.ACTION_DOWN -> fingerDown(0)
+            MotionEvent.ACTION_POINTER_DOWN -> fingerDown(event.actionIndex)
+            MotionEvent.ACTION_MOVE -> {
+                for (i in 0 until event.pointerCount) {
+                    val slot = event.getPointerId(i)
+                    val x = event.getX(i)
+                    val y = event.getY(i)
 
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> fingerDown(slot, x, y)
-                MotionEvent.ACTION_MOVE -> fingerMove(slot, x, y)
-                MotionEvent.ACTION_UP -> fingerUp(slot)
-                MotionEvent.ACTION_CANCEL -> fingerUp(slot)
+                    fingerMove(slot, x, y)
+                }
             }
+            MotionEvent.ACTION_UP -> allFingersUp()
+            MotionEvent.ACTION_POINTER_UP -> fingerUp(event.actionIndex)
+            MotionEvent.ACTION_CANCEL -> allFingersUp()
         }
 
         invalidate()
