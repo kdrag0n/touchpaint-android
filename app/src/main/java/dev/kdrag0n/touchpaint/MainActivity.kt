@@ -31,6 +31,11 @@ class MainActivity : AppCompatActivity() {
                 paintView.mode = PaintMode.FILL
                 true
             }
+            R.id.follow_mode -> {
+                item.isChecked = !item.isChecked
+                paintView.mode = PaintMode.FOLLOW
+                true
+            }
             R.id.sample_rate_toggle -> {
                 item.isChecked = !item.isChecked
                 paintView.measureSampleRate = item.isChecked

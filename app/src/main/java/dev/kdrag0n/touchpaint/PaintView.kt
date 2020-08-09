@@ -31,6 +31,14 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         isAntiAlias = true
     }
 
+    private val boxPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.STROKE
+        strokeWidth = 300f
+        strokeCap = Paint.Cap.SQUARE
+        isAntiAlias = true
+    }
+
     var mode = PaintMode.PAINT
 
     private var fingers = 0
@@ -70,6 +78,15 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         when (mode) {
             PaintMode.PAINT -> canvas!!.drawBitmap(bitmap, 0f, 0f, null)
             PaintMode.FILL -> canvas!!.drawPaint(if (fillDown) fgPaint else bgPaint)
+            PaintMode.FOLLOW -> {
+                canvas!!.drawPaint(bgPaint)
+
+                for (point in lastPoint) {
+                    if (point.x != -1f && point.y != -1f) {
+                        canvas.drawPoint(point.x, point.y, boxPaint)
+                    }
+                }
+            }
         }
     }
 
@@ -117,8 +134,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 PaintMode.FILL -> {
                     removeCallbacks(clearRunnable)
                     fillDown = true
-                    invalidate()
                 }
+                else -> {}
             }
 
             kickSampleRate()

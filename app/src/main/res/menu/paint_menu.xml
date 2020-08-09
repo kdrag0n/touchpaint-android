@@ -8,6 +8,8 @@
                     android:checked="true" />
                 <item android:id="@+id/fill_mode"
                     android:title="@string/fill" />
+                <item android:id="@+id/follow_mode"
+                    android:title="@string/follow" />
             </group>
         </menu>
     </item>
