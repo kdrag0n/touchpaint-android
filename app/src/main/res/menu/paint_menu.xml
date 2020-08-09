@@ -10,6 +10,8 @@
                     android:title="@string/fill" />
                 <item android:id="@+id/follow_mode"
                     android:title="@string/follow" />
+                <item android:id="@+id/blank_mode"
+                    android:title="@string/blank" />
             </group>
         </menu>
     </item>

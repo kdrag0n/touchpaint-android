@@ -13,4 +13,5 @@
     <string name="brush_size">Brush size</string>
     <string name="fill">Fill</string>
     <string name="follow">Follow</string>
+    <string name="blank">Blank redraw</string>
 </resources>

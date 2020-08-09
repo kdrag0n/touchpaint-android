@@ -40,6 +40,11 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     var mode = PaintMode.PAINT
+        set(value) {
+            field = value
+            clearCanvas()
+            invalidate()
+        }
 
     private var fingers = 0
     private lateinit var bitmap: Bitmap
@@ -86,6 +91,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                         canvas.drawPoint(point.x, point.y, boxPaint)
                     }
                 }
+            }
+            PaintMode.BLANK -> {
+                canvas!!.drawPaint(bgPaint)
+                invalidate()
             }
         }
     }
