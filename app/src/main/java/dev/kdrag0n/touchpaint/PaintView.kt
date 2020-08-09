@@ -50,7 +50,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         toast.show()
         lastToast = toast
 
-        eventsReceived = 0
         kickSampleRate()
     }
 
@@ -77,6 +76,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private fun kickSampleRate() {
+        eventsReceived = 0
+
         if (measureSampleRate) {
             postDelayed(sampleRateRunnable, 1000)
         }
