@@ -44,6 +44,8 @@
                 <item android:id="@+id/clear_delay_next_stroke"
                     android:title="@string/on_next_stroke"
                     android:checked="true" />
+                <item android:id="@+id/clear_delay_100ms"
+                    android:title="@string/clear_delay_100ms" />
                 <item android:id="@+id/clear_delay_250ms"
                     android:title="@string/clear_delay_250ms" />
                 <item android:id="@+id/clear_delay_500ms"

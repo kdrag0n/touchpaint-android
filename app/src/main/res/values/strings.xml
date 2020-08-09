@@ -22,4 +22,5 @@
     <string name="never">Never</string>
     <string name="on_next_stroke">On next stroke</string>
     <string name="clear_delay">Clear delay</string>
+    <string name="clear_delay_100ms">100 ms</string>
 </resources>

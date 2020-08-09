@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.brush_size_150px -> setBrushSize(150f)
 
                 // Paint clear delays
+                R.id.clear_delay_100ms -> paintClearDelay = 100
                 R.id.clear_delay_250ms -> paintClearDelay = 250
                 R.id.clear_delay_500ms -> paintClearDelay = 500
                 R.id.clear_delay_1000ms -> paintClearDelay = 1000
