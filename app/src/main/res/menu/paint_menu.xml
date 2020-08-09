@@ -38,7 +38,7 @@
         </menu>
     </item>
 
-    <item android:id="@+id/sample_rate_toggle"
-        android:title="@string/measure_sample_rate"
+    <item android:id="@+id/event_rate_toggle"
+        android:title="@string/show_event_rate"
         android:checkable="true" />
 </menu>

@@ -53,7 +53,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val fingerDown = Array(MAX_FINGERS) { false }
     private var fillDown = false
 
-    var measureSampleRate = false
+    var measureEventRate = false
         set(value) {
             field = value
             if (!value) {
@@ -67,7 +67,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         lastToast?.cancel()
         lastToast = null
 
-        val toast = Toast.makeText(context, "Touch sample rate: $eventsReceived Hz", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Touch event rate: $eventsReceived Hz", Toast.LENGTH_SHORT)
         toast.show()
         lastToast = toast
 
@@ -121,7 +121,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private fun kickSampleRate() {
         eventsReceived = 0
 
-        if (measureSampleRate) {
+        if (measureEventRate) {
             postDelayed(sampleRateRunnable, 1000)
         }
     }
@@ -162,7 +162,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
         lastPoint[slot].x = x
         lastPoint[slot].y = y
-        eventsReceived++
     }
 
     private fun fingerUp(slot: Int) {
@@ -205,6 +204,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                     }
 
                     fingerMove(slot, event.getX(p), event.getY(p))
+                }
+
+                if (measureEventRate) {
+                    eventsReceived++
                 }
             }
             MotionEvent.ACTION_POINTER_UP -> fingerUp(event.actionIndex)

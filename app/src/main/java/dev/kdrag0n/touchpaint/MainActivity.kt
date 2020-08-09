@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
                 paintView.mode = PaintMode.BLANK
                 true
             }
-            R.id.sample_rate_toggle -> {
+            R.id.event_rate_toggle -> {
                 item.isChecked = !item.isChecked
-                paintView.measureSampleRate = item.isChecked
+                paintView.measureEventRate = item.isChecked
                 true
             }
             R.id.brush_size_1px -> {
