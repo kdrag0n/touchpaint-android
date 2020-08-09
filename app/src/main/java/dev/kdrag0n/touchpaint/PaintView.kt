@@ -29,6 +29,14 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val fingerDown = Array(MAX_FINGERS) { false }
     private val pathStarted = Array(MAX_FINGERS) { false }
 
+    var measureSampleRate = false
+        set(value) {
+            field = value
+            if (!value) {
+                stopSampleRate()
+            }
+        }
+
     private var eventsReceived = 0
     private var lastToast: Toast? = null
     private val sampleRateRunnable = Runnable {
@@ -50,6 +58,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
+    fun setBrushSize(size: Float) {
+        brushPaint.strokeWidth = size
+    }
+
     private fun clearCanvas() {
         paths.clear()
         for (i in curPaths.indices) {
@@ -58,7 +70,9 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private fun kickSampleRate() {
-        postDelayed(sampleRateRunnable, 1000)
+        if (measureSampleRate) {
+            postDelayed(sampleRateRunnable, 1000)
+        }
     }
 
     private fun stopSampleRate() {

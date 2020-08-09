@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Touchpaint</string>
+    <string name="mode">Mode</string>
+    <string name="paint">Paint</string>
+    <string name="measure_sample_rate">Measure sample rate</string>
+    <string name="size_1px">1 px</string>
+    <string name="size_3px">3 px</string>
+    <string name="size_5px">5 px</string>
+    <string name="size_10px">10 px</string>
+    <string name="size_15px">15 px</string>
+    <string name="size_50px">50 px</string>
+    <string name="size_150px">150 px</string>
+    <string name="brush_size">Brush size</string>
 </resources>

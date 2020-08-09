@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/mode" android:title="@string/mode">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/paint_mode"
+                    android:title="@string/paint" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:id="@+id/brush_size" android:title="@string/brush_size">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/brush_size_1px"
+                    android:title="@string/size_1px" />
+                <item android:id="@+id/brush_size_3px"
+                    android:title="@string/size_3px" />
+                <item android:id="@+id/brush_size_5px"
+                    android:title="@string/size_5px" />
+                <item android:id="@+id/brush_size_10px"
+                    android:title="@string/size_10px" />
+                <item android:id="@+id/brush_size_15px"
+                    android:title="@string/size_15px" />
+                <item android:id="@+id/brush_size_50px"
+                    android:title="@string/size_50px" />
+                <item android:id="@+id/brush_size_150px"
+                    android:title="@string/size_150px" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:id="@+id/sample_rate_toggle"
+        android:title="@string/measure_sample_rate"
+        android:checkable="true" />
+</menu>
