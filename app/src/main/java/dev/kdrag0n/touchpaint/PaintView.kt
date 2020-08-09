@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
@@ -25,7 +26,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val brushPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
-        strokeWidth = 3f
+        strokeWidth = dpToPx(3f)
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
         isAntiAlias = true
@@ -34,7 +35,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val boxPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
-        strokeWidth = 300f
+        strokeWidth = dpToPx(115f)
         strokeCap = Paint.Cap.SQUARE
         isAntiAlias = true
     }
@@ -110,8 +111,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         clearCanvas()
     }
 
-    fun setBrushSize(size: Float) {
-        brushPaint.strokeWidth = size
+    private fun dpToPx(dp: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
+    }
+
+    fun setBrushSize(dp: Float) {
+        brushPaint.strokeWidth = dpToPx(dp)
     }
 
     private fun clearCanvas() {
