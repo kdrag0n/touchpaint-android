@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import java.util.*
 
 const val MAX_FINGERS = 10
 
@@ -27,7 +26,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private var fingers = 0
-    private val points = Vector<Float>()
+    private lateinit var bitmap: Bitmap
+    private lateinit var bufCanvas: Canvas
     private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
 
@@ -54,8 +54,13 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     override fun onDraw(canvas: Canvas?) {
-        canvas!!.drawPaint(bgPaint)
-        canvas.drawLines(points.toFloatArray(), brushPaint)
+        canvas!!.drawBitmap(bitmap, 0f, 0f, null)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        bufCanvas = Canvas(bitmap)
+        clearCanvas()
     }
 
     fun setBrushSize(size: Float) {
@@ -64,7 +69,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
 
     private fun clearCanvas() {
-        points.clear()
+        bufCanvas.drawPaint(bgPaint)
         lastPoint.forEach {
             it.x = -1f
             it.y = -1f
@@ -100,10 +105,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
 
         if (lastPoint[slot].x != -1f && lastPoint[slot].y != -1f) {
-            points.add(lastPoint[slot].x)
-            points.add(lastPoint[slot].y)
-            points.add(x)
-            points.add(y)
+            bufCanvas.drawLine(x, y, lastPoint[slot].x, lastPoint[slot].y, brushPaint)
         }
 
         lastPoint[slot].x = x
