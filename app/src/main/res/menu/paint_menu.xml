@@ -4,7 +4,8 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item android:id="@+id/paint_mode"
-                    android:title="@string/paint" />
+                    android:title="@string/paint"
+                    android:checked="true" />
             </group>
         </menu>
     </item>
@@ -15,7 +16,8 @@
                 <item android:id="@+id/brush_size_1px"
                     android:title="@string/size_1px" />
                 <item android:id="@+id/brush_size_3px"
-                    android:title="@string/size_3px" />
+                    android:title="@string/size_3px"
+                    android:checked="true" />
                 <item android:id="@+id/brush_size_5px"
                     android:title="@string/size_5px" />
                 <item android:id="@+id/brush_size_10px"
