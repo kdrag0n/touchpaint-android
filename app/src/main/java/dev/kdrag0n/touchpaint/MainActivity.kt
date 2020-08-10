@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                 findItem(R.id.event_rate_toggle).isChecked = measureEventRate
             }
         }
+
         return true
     }
 
