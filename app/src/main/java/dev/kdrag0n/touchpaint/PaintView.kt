@@ -83,15 +83,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             }
         }
 
-    private fun dpToPx(dp: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
-    }
-
-    private fun pxToDp(px: Float): Float {
-        val scale = resources.displayMetrics.density
-        return px / scale
-    }
-
     fun setBrushSizePx(px: Float) {
         brushPaint.strokeWidth = px
     }
@@ -100,12 +91,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         return if (brushPaint.strokeWidth == 1f) {
             -1f
         } else {
-            pxToDp(brushPaint.strokeWidth)
+            resources.pxToDp(brushPaint.strokeWidth)
         }
     }
 
     fun setBrushSize(dp: Float) {
-        setBrushSizePx(dpToPx(dp))
+        setBrushSizePx(resources.dpToPx(dp))
     }
 
     private fun clearCanvas() {
