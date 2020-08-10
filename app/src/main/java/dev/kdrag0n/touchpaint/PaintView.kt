@@ -65,7 +65,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     // Event rate measuring
     private var eventsReceived = 0
     private var lastToast: Toast? = null
-    private val sampleRateRunnable = Runnable {
+    private val eventRateRunnable = Runnable {
         lastToast?.cancel()
         lastToast = null
 
@@ -73,13 +73,13 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         toast.show()
         lastToast = toast
 
-        kickSampleRate()
+        kickEventRate()
     }
     var measureEventRate = false
         set(value) {
             field = value
             if (!value) {
-                stopSampleRate()
+                stopEventRate()
             }
         }
 
@@ -117,16 +117,16 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
-    private fun kickSampleRate() {
+    private fun kickEventRate() {
         eventsReceived = 0
 
         if (measureEventRate) {
-            postDelayed(sampleRateRunnable, 1000)
+            postDelayed(eventRateRunnable, 1000)
         }
     }
 
-    private fun stopSampleRate() {
-        removeCallbacks(sampleRateRunnable)
+    private fun stopEventRate() {
+        removeCallbacks(eventRateRunnable)
     }
 
     private fun fingerDown(slot: Int) {
@@ -151,7 +151,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 else -> {}
             }
 
-            kickSampleRate()
+            kickEventRate()
         }
     }
 
@@ -191,7 +191,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 else -> {}
             }
 
-            stopSampleRate()
+            stopEventRate()
         }
     }
 
