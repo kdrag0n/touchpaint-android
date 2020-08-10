@@ -13,33 +13,6 @@ const val MAX_FINGERS = 10
 
 class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 {
-    private val bgPaint = Paint().apply {
-        color = Color.BLACK
-        style = Paint.Style.FILL
-    }
-
-    private val fgPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.FILL
-    }
-
-    private val brushPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.STROKE
-        strokeWidth = resources.getDimension(R.dimen.default_brush_size)
-        strokeCap = Paint.Cap.ROUND
-        strokeJoin = Paint.Join.ROUND
-        isAntiAlias = true
-    }
-
-    private val boxPaint = Paint().apply {
-        color = Color.WHITE
-        style = Paint.Style.STROKE
-        strokeWidth = resources.getDimension(R.dimen.follow_box_size)
-        strokeCap = Paint.Cap.SQUARE
-        isAntiAlias = true
-    }
-
     var mode = PaintMode.PAINT
         set(value) {
             field = value
@@ -49,24 +22,47 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             invalidate()
         }
 
-    private var fingers = 0
-    private lateinit var bitmap: Bitmap
-    private var bufCanvas: Canvas? = null
-    private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
-    private val fingerDown = Array(MAX_FINGERS) { false }
-    private var fillDown = false
-
-    var measureEventRate = false
-        set(value) {
-            field = value
-            if (!value) {
-                stopSampleRate()
-            }
-        }
-
     // 0 = on next stroke, -1 = never, * = delay in ms
     var paintClearDelay = 0L
 
+    // Finger tracking
+    private var fingers = 0
+    private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
+    private val fingerDown = Array(MAX_FINGERS) { false }
+
+    // Rendering
+    private lateinit var bitmap: Bitmap
+    private var bufCanvas: Canvas? = null
+    private var fillDown = false
+    private val clearRunnable = Runnable {
+        clearCanvas()
+        invalidate()
+    }
+    private val bgPaint = Paint().apply {
+        color = Color.BLACK
+        style = Paint.Style.FILL
+    }
+    private val fgPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.FILL
+    }
+    private val brushPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.STROKE
+        strokeWidth = resources.getDimension(R.dimen.default_brush_size)
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
+        isAntiAlias = true
+    }
+    private val boxPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.STROKE
+        strokeWidth = resources.getDimension(R.dimen.follow_box_size)
+        strokeCap = Paint.Cap.SQUARE
+        isAntiAlias = true
+    }
+
+    // Event rate measuring
     private var eventsReceived = 0
     private var lastToast: Toast? = null
     private val sampleRateRunnable = Runnable {
@@ -79,37 +75,13 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
         kickSampleRate()
     }
-
-    private val clearRunnable = Runnable {
-        clearCanvas()
-        invalidate()
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        when (mode) {
-            PaintMode.PAINT -> canvas!!.drawBitmap(bitmap, 0f, 0f, null)
-            PaintMode.FILL -> canvas!!.drawPaint(if (fillDown) fgPaint else bgPaint)
-            PaintMode.FOLLOW -> {
-                canvas!!.drawPaint(bgPaint)
-
-                for (point in lastPoint) {
-                    if (point.x != -1f && point.y != -1f) {
-                        canvas.drawPoint(point.x, point.y, boxPaint)
-                    }
-                }
-            }
-            PaintMode.BLANK -> {
-                canvas!!.drawPaint(bgPaint)
-                invalidate()
+    var measureEventRate = false
+        set(value) {
+            field = value
+            if (!value) {
+                stopSampleRate()
             }
         }
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
-        bufCanvas = Canvas(bitmap)
-        clearCanvas()
-    }
 
     private fun dpToPx(dp: Float): Float {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
@@ -227,6 +199,32 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         for (i in 0 until MAX_FINGERS) {
             fingerUp(i)
         }
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        when (mode) {
+            PaintMode.PAINT -> canvas!!.drawBitmap(bitmap, 0f, 0f, null)
+            PaintMode.FILL -> canvas!!.drawPaint(if (fillDown) fgPaint else bgPaint)
+            PaintMode.FOLLOW -> {
+                canvas!!.drawPaint(bgPaint)
+
+                for (point in lastPoint) {
+                    if (point.x != -1f && point.y != -1f) {
+                        canvas.drawPoint(point.x, point.y, boxPaint)
+                    }
+                }
+            }
+            PaintMode.BLANK -> {
+                canvas!!.drawPaint(bgPaint)
+                invalidate()
+            }
+        }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
+        bufCanvas = Canvas(bitmap)
+        clearCanvas()
     }
 
     @SuppressLint("ClickableViewAccessibility")
