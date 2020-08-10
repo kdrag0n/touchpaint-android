@@ -6,4 +6,3 @@ This is a simple Android app for latency testing and comparison to the [Touchpai
 - Fill screen on touch (for testing tap latency)
 - Box follows touch (for testing drag latency differently, similar to this [Microsoft Research video](https://www.youtube.com/watch?v=vOvQCPLkPt4))
 - Blank redraw (for testing baseline rendering performance)
-;
