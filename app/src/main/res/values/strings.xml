@@ -25,8 +25,8 @@
     <string name="clear_delay_100ms">100 ms</string>
     <string name="size_physical_1px">1 physical pixel</string>
     <string name="size_2px">2 px</string>
-    <string name="preference_mode"><xliff:g id="preference_key">mode</xliff:g></string>
-    <string name="preference_brush_size"><xliff:g id="preference_key">brush_size</xliff:g></string>
-    <string name="preference_paint_clear_delay"><xliff:g id="preference_key">paint_clear_delay</xliff:g></string>
-    <string name="preference_measure_event_rate"><xliff:g id="preference_key">measure_event_rate</xliff:g></string>
+    <string name="preference_mode" translatable="false"><xliff:g id="preference_key">mode</xliff:g></string>
+    <string name="preference_brush_size" translatable="false"><xliff:g id="preference_key">brush_size</xliff:g></string>
+    <string name="preference_paint_clear_delay" translatable="false"><xliff:g id="preference_key">paint_clear_delay</xliff:g></string>
+    <string name="preference_measure_event_rate" translatable="false"><xliff:g id="preference_key">measure_event_rate</xliff:g></string>
 </resources>
