@@ -60,7 +60,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val highlightPointPaint = Paint().apply {
         color = Color.RED
         style = Paint.Style.STROKE
-        strokeWidth = resources.getDimension(R.dimen.default_brush_size)
+        strokeWidth = resources.getDimension(R.dimen.default_brush_size) * 1.5f
         strokeCap = Paint.Cap.SQUARE
         isAntiAlias = true
     }
