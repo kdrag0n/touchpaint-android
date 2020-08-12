@@ -27,7 +27,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private var fingers = 0
     private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
-    var saveEventPoints = false
+    var showEventPoints = false
 
     // Rendering
     private lateinit var bitmap: Bitmap
@@ -173,7 +173,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         lastPoint[slot].x = x
         lastPoint[slot].y = y
 
-        if (isSystemEvent && saveEventPoints) {
+        if (isSystemEvent && showEventPoints) {
             eventPoints.add(PointF(x, y))
         }
     }
@@ -226,8 +226,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             }
         }
 
-        for (point in eventPoints) {
-            canvas.drawPoint(point.x, point.y, highlightPointPaint)
+        if (showEventPoints) {
+            for (point in eventPoints) {
+                canvas.drawPoint(point.x, point.y, highlightPointPaint)
+            }
         }
     }
 
