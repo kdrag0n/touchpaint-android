@@ -2,12 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_clear"
-        android:icon="@drawable/ic_delete_24dp"
-        android:title="@string/clear"
-        app:showAsAction="ifRoom" />
+    <item android:id="@+id/mode"
+        android:title="@string/mode"
+        android:icon="@drawable/ic_baseline_settings_24"
+        app:showAsAction="ifRoom">
 
-    <item android:id="@+id/mode" android:title="@string/mode">
         <menu>
             <group android:checkableBehavior="single">
                 <item android:id="@+id/paint_mode"
@@ -21,9 +20,14 @@
                     android:title="@string/blank" />
             </group>
         </menu>
+
     </item>
 
-    <item android:id="@+id/brush_size" android:title="@string/brush_size">
+    <item android:id="@+id/brush_size"
+        android:title="@string/brush_size"
+        android:icon="@drawable/ic_baseline_brush_24"
+        app:showAsAction="ifRoom">
+
         <menu>
             <group android:checkableBehavior="single">
                 <item android:id="@+id/brush_size_physical_1px"
@@ -47,9 +51,14 @@
                     android:title="@string/size_150px" />
             </group>
         </menu>
+
     </item>
 
-    <item android:id="@+id/clear_delay" android:title="@string/clear_delay">
+    <item android:id="@+id/clear_delay"
+        android:title="@string/clear_delay"
+        android:icon="@drawable/ic_baseline_timer_24"
+        app:showAsAction="ifRoom">
+
         <menu>
             <group android:checkableBehavior="single">
                 <item android:id="@+id/clear_delay_next_stroke"
@@ -71,7 +80,13 @@
                     android:title="@string/never" />
             </group>
         </menu>
+
     </item>
+
+    <item android:id="@+id/action_clear"
+        android:title="@string/clear"
+        android:icon="@drawable/ic_baseline_delete_24"
+        app:showAsAction="always" />
 
     <item android:id="@+id/event_rate_toggle"
         android:title="@string/show_event_rate"
