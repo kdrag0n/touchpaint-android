@@ -28,10 +28,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private var fingers = 0
     private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
+    var saveEventPoints = false
 
     // Rendering
     private lateinit var bitmap: Bitmap
     private var bufCanvas: Canvas? = null
+    private val eventPoints = mutableListOf<PointF>()
     private var fillDown = false
     private val clearRunnable = Runnable {
         clearCanvas()
@@ -51,6 +53,13 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         strokeWidth = resources.getDimension(R.dimen.default_brush_size)
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
+        isAntiAlias = true
+    }
+    private val highlightPointPaint = Paint().apply {
+        color = Color.RED
+        style = Paint.Style.STROKE
+        strokeWidth = resources.getDimension(R.dimen.default_brush_size)
+        strokeCap = Paint.Cap.SQUARE
         isAntiAlias = true
     }
     private val boxPaint = Paint().apply {
@@ -84,6 +93,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
     fun setBrushSizePx(px: Float) {
         brushPaint.strokeWidth = px
+        highlightPointPaint.strokeWidth = px * 1.5f
     }
 
     fun getBrushSizeDp(): Float {
@@ -101,6 +111,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private fun clearCanvas() {
         fillDown = false
         bufCanvas?.drawPaint(bgPaint)
+        eventPoints.clear()
+
         lastPoint.forEach {
             it.x = -1f
             it.y = -1f
@@ -145,7 +157,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         }
     }
 
-    private fun fingerMove(slot: Int, x: Float, y: Float) {
+    private fun fingerMove(slot: Int, x: Float, y: Float, isSystemEvent: Boolean) {
         if (!fingerDown[slot]) {
             return
         }
@@ -160,6 +172,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
         lastPoint[slot].x = x
         lastPoint[slot].y = y
+
+        if (isSystemEvent) {
+            eventPoints.add(PointF(x, y))
+        }
     }
 
     private fun fingerUp(slot: Int) {
@@ -209,6 +225,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 invalidate()
             }
         }
+
+        for (point in eventPoints) {
+            canvas.drawPoint(point.x, point.y, highlightPointPaint)
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -222,23 +242,23 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         when (event!!.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 fingerDown(0)
-                fingerMove(0, event.x, event.y)
+                fingerMove(0, event.x, event.y, true)
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
                 val slot = event.actionIndex
 
                 fingerDown(slot)
-                fingerMove(slot, event.getX(slot), event.getY(slot))
+                fingerMove(slot, event.getX(slot), event.getY(slot), true)
             }
             MotionEvent.ACTION_MOVE -> {
                 for (p in 0 until event.pointerCount) {
                     val slot = event.getPointerId(p)
 
                     for (h in 0 until event.historySize) {
-                        fingerMove(slot, event.getHistoricalX(p, h), event.getHistoricalY(p, h))
+                        fingerMove(slot, event.getHistoricalX(p, h), event.getHistoricalY(p, h), false)
                     }
 
-                    fingerMove(slot, event.getX(p), event.getY(p))
+                    fingerMove(slot, event.getX(p), event.getY(p), true)
                 }
 
                 if (measureEventRate) {

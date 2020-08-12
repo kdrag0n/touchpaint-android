@@ -69,4 +69,8 @@
     <item android:id="@+id/event_rate_toggle"
         android:title="@string/show_event_rate"
         android:checkable="true" />
+
+    <item android:id="@+id/event_point_toggle"
+        android:title="@string/highlight_event_points"
+        android:checkable="true" />
 </menu>

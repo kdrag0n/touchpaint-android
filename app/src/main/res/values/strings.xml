@@ -29,4 +29,6 @@
     <string name="preference_brush_size" translatable="false"><xliff:g id="preference_key">brush_size</xliff:g></string>
     <string name="preference_paint_clear_delay" translatable="false"><xliff:g id="preference_key">paint_clear_delay</xliff:g></string>
     <string name="preference_measure_event_rate" translatable="false"><xliff:g id="preference_key">measure_event_rate</xliff:g></string>
+    <string name="preference_show_event_points" translatable="false"><xliff:g id="preference_key">show_event_points</xliff:g></string>
+    <string name="highlight_event_points">Highlight event points</string>
 </resources>

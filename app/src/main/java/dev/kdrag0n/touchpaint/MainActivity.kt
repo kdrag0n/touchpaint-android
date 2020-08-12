@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
                 mode = PaintMode.values()[getInt(getString(R.string.preference_mode), 0)]
                 paintClearDelay = getLong(getString(R.string.preference_paint_clear_delay), 0)
                 measureEventRate = getBoolean(getString(R.string.preference_measure_event_rate), false)
+                saveEventPoints = getBoolean(getString(R.string.preference_show_event_points), false)
 
                 val savedBrushSize = getFloat(getString(R.string.preference_brush_size), 2f)
                 if (savedBrushSize == -1f)
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 }).isChecked = true
 
                 findItem(R.id.event_rate_toggle).isChecked = measureEventRate
+                findItem(R.id.event_point_toggle).isChecked = saveEventPoints
             }
         }
 
@@ -112,6 +114,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Other toggles
                 R.id.event_rate_toggle -> measureEventRate = item.isChecked
+                R.id.event_point_toggle -> saveEventPoints = item.isChecked
 
                 // Submenus and other unhandled items
                 else -> return super.onOptionsItemSelected(item)
@@ -122,6 +125,7 @@ class MainActivity : AppCompatActivity() {
                 putFloat(getString(R.string.preference_brush_size), getBrushSizeDp())
                 putLong(getString(R.string.preference_paint_clear_delay), paintClearDelay)
                 putBoolean(getString(R.string.preference_measure_event_rate), measureEventRate)
+                putBoolean(getString(R.string.preference_show_event_points), saveEventPoints)
                 apply()
             }
         }
