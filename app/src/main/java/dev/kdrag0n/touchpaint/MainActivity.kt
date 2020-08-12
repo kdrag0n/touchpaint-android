@@ -112,6 +112,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.clear_delay_never -> paintClearDelay = -1
                 R.id.clear_delay_next_stroke -> paintClearDelay = 0
 
+                // Actions
+                R.id.action_clear -> clearCanvas()
+
                 // Other toggles
                 R.id.event_rate_toggle -> measureEventRate = item.isChecked
                 R.id.event_point_toggle -> saveEventPoints = item.isChecked

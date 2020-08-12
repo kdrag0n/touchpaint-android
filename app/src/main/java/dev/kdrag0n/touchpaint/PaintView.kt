@@ -18,7 +18,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
 
             removeCallbacks(clearRunnable)
             clearCanvas()
-            invalidate()
         }
 
     // 0 = on next stroke, -1 = never, * = delay in ms
@@ -37,7 +36,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private var fillDown = false
     private val clearRunnable = Runnable {
         clearCanvas()
-        invalidate()
     }
     private val bgPaint = Paint().apply {
         color = Color.BLACK
@@ -108,7 +106,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         setBrushSizePx(resources.dpToPx(dp))
     }
 
-    private fun clearCanvas() {
+    fun clearCanvas() {
         fillDown = false
         bufCanvas?.drawPaint(bgPaint)
         eventPoints.clear()
@@ -117,6 +115,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             it.x = -1f
             it.y = -1f
         }
+
+        invalidate()
     }
 
     private fun kickEventRate() {
