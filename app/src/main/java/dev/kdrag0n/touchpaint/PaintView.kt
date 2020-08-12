@@ -28,6 +28,10 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
     private val lastPoint = Array(MAX_FINGERS) { PointF(-1f, -1f) }
     private val fingerDown = Array(MAX_FINGERS) { false }
     var showEventPoints = false
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     // Rendering
     private lateinit var bitmap: Bitmap
