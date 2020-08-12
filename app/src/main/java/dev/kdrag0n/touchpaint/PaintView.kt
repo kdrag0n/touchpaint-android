@@ -173,7 +173,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         lastPoint[slot].x = x
         lastPoint[slot].y = y
 
-        if (isSystemEvent) {
+        if (isSystemEvent && saveEventPoints) {
             eventPoints.add(PointF(x, y))
         }
     }
