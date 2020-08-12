@@ -1,6 +1,6 @@
 # Touchpaint for Android
 
-This is a simple Android app for latency testing and comparison to the [Touchpaint Linux kernel module](https://github.com/kdrag0n/touchpaint). Available modes include:
+This is a simple Android app for latency testing and comparison to the [Touchpaint Linux kernel module](https://github.com/kdrag0n/touchpaint) and [Flutter app](https://github.com/kdrag0n/touchpaint-flutter). Available modes include:
 
 - Paint with finger (for testing drag latency)
 - Fill screen on touch (for testing tap latency)
