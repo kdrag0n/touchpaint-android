@@ -93,7 +93,7 @@
         android:checkable="true" />
 
     <item android:id="@+id/event_point_toggle"
-        android:title="@string/highlight_event_points"
+        android:title="@string/show_event_points"
         android:checkable="true" />
 
     <item android:id="@+id/event_batching_toggle"

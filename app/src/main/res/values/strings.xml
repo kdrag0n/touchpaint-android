@@ -31,7 +31,7 @@
     <string name="preference_measure_event_rate" translatable="false"><xliff:g id="preference_key">measure_event_rate</xliff:g></string>
     <string name="preference_show_event_points" translatable="false"><xliff:g id="preference_key">show_event_points</xliff:g></string>
     <string name="preference_batch_events" translatable="false"><xliff:g id="preference_key">batch_events</xliff:g></string>
-    <string name="highlight_event_points">Highlight event points</string>
+    <string name="show_event_points">Show event points</string>
     <string name="clear">Clear</string>
     <string name="batch_events">Batch events</string>
 </resources>
