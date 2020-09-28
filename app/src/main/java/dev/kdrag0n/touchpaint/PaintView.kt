@@ -72,7 +72,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
         isAntiAlias = true
     }
 
-    // Event rate measuring
+    // Event rate measurement
     private var eventsReceived = 0
     private var lastToast: Toast? = null
     private val eventRateRunnable = Runnable {
@@ -92,6 +92,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
                 stopEventRate()
             }
         }
+    var batchEvents = false
 
     fun setBrushSizePx(px: Float) {
         brushPaint.strokeWidth = px
@@ -249,6 +250,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs)
             MotionEvent.ACTION_DOWN -> {
                 fingerDown(0)
                 fingerMove(0, event.x, event.y, true)
+
+                if (!batchEvents) {
+                    // Unbuffered dispatch only affects a single gesture (until the next ACTION_UP),
+                    // so we need to request it on every ACTION_DOWN event
+                    rootView.requestUnbufferedDispatch(event)
+                }
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
                 val slot = event.actionIndex
